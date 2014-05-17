@@ -1,0 +1,1 @@
+Francesinha Cafe;Rua da Alegria, 946;225 502 722;7;one;;Mucaba Cafe Grill;Avenida Beira Mar, 1791;914 758 966;9;two;;Tappas Caffe;Rua Doutor Antonio Granjo, 549;223 706 196;8;three;;Cafe Santiago;Rua Passos Manuel, 226;222 055 797;9;four;;Bufete Fase;Rua Santa Catarina, 1147;22 205 21 18;9;five;;Cufra Bilhares;Avenida da Boavista, 294;226 098 288;7;six
