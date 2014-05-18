@@ -109,9 +109,9 @@ public class CustomArrayAdapter extends ArrayAdapter<String> {
 		final TextView phone = (TextView) row.findViewById(R.id.phone);
 		// final ImageView image = (ImageView) row.findViewById(R.id.image);
 
-		final ViewPager pager = (ViewPager) row.findViewById(R.id.pager);
-		pager.setId(position + 1);
-		setViewpager(pager, mFragmentManager, mArrayImages[position]);
+		// final ViewPager pager = (ViewPager) row.findViewById(R.id.pager);
+		// pager.setId(position + 1);
+		// setViewpager(pager, mFragmentManager, mArrayImages[position]);
 
 		// Label and description
 		label.setText(mArrayLabels[position]);

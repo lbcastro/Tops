@@ -8,52 +8,84 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.res.AssetManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
+import android.widget.ListView;
+
+import com.castro.tops.swipelistview.SwipeListView;
 
 public class MainActivity extends ActionBarActivity {
+
+	private class BuildRestaurantList extends
+			AsyncTask<Void, Void, List<Restaurant>> {
+
+		private final String LINE_SPLIT_CHAR = ";;";
+		private final String ITEM_SPLIT_CHAR = ";";
+		private final String LIST_FILE = "list.txt";
+
+		@Override
+		protected List<Restaurant> doInBackground(Void... params) {
+			AssetManager assets = getAssets();
+			List<Restaurant> list = new ArrayList<Restaurant>();
+			try {
+				BufferedReader reader = new BufferedReader(
+						new InputStreamReader(assets.open(LIST_FILE)));
+				String[] items = reader.readLine().split(LINE_SPLIT_CHAR);
+				String[] item;
+				int count = 1;
+
+				for (String s : items) {
+					item = s.split(ITEM_SPLIT_CHAR);
+					Restaurant r = new Restaurant();
+					r.setName(item[0]);
+					r.setAddress(item[1]);
+					r.setPhone(item[2]);
+					r.setRank(count);
+					r.setPrice(Integer.parseInt(item[3]));
+					r.setImage(getResources().getIdentifier(item[4],
+							"drawable", getPackageName()));
+
+					list.add(r);
+					count++;
+				}
+			} catch (IOException e) {
+			}
+
+			return list;
+		}
+
+		@Override
+		protected void onPostExecute(List<Restaurant> list) {
+			mRestaurantList.clear();
+			mRestaurantList.addAll(list);
+			mCustomAdapter.notifyDataSetChanged();
+		}
+	}
+
+	public static int getResId(String variableName, Class<?> c) {
+
+		try {
+			Field idField = c.getDeclaredField(variableName);
+			return idField.getInt(idField);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return -1;
+		}
+	}
+
+	private List<Restaurant> mRestaurantList;
+
+	private CustomAdapter mCustomAdapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+		setContentView(R.layout.swipelistview_fragment);
 
-		setList();
-
-		int size = mRestaurantList.size();
-		String[] labels = new String[size];
-		String[] address = new String[size];
-		String[] phone = new String[size];
-		int[] ranks = new int[size];
-		float[] prices = new float[size];
-		int[] images = new int[size];
-
-		for (int x = 0; x < size; x++) {
-			labels[x] = mRestaurantList.get(x).getName();
-			address[x] = mRestaurantList.get(x).getAddress();
-			phone[x] = mRestaurantList.get(x).getPhone();
-			prices[x] = mRestaurantList.get(x).getPrice();
-			ranks[x] = x + 1;
-			images[x] = mRestaurantList.get(x).getImage();
-		}
-
-		CustomArrayAdapter adapter = new CustomArrayAdapter(this, labels,
-				ranks, prices, images, address, phone,
-				this.getSupportFragmentManager());
-
-		com.castro.tops.swipelistview.SwipeListView listView = (com.castro.tops.swipelistview.SwipeListView) findViewById(R.id.example_lv_list);
-		listView.setAdapter(adapter);
-		// if (savedInstanceState == null) {
-		// PlaceholderFragment fragment = new PlaceholderFragment();
-		// getSupportFragmentManager().beginTransaction()
-		// .add(R.id.container, fragment).commit();
-		// }
+		setSwipeList();
 	}
 
 	@Override
@@ -76,141 +108,17 @@ public class MainActivity extends ActionBarActivity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	public static int getResId(String variableName, Class<?> c) {
-
-		try {
-			Field idField = c.getDeclaredField(variableName);
-			return idField.getInt(idField);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return -1;
-		}
-	}
-
-	private void setList() {
+	private void setSwipeList() {
 		mRestaurantList = new ArrayList<Restaurant>();
-		BufferedReader br;
-		try {
-			AssetManager assets = getAssets();
-			br = new BufferedReader(new InputStreamReader(
-					assets.open("list.txt")));
+		mCustomAdapter = new CustomAdapter(this, mRestaurantList);
+		SwipeListView listView = (SwipeListView) findViewById(R.id.example_lv_list);
 
-			String items = br.readLine();
-			String[] list = items.split(";;");
+		listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+		listView.setSwipeMode(SwipeListView.SWIPE_MODE_LEFT);
 
-			for (String s : list) {
-				String[] split = s.split(";");
-				Restaurant r = new Restaurant(split[0], split[1], split[2],
-						Integer.parseInt(split[3]), getResources()
-								.getIdentifier(split[4], "drawable",
-										getPackageName()));
-				mRestaurantList.add(r);
-			}
+		listView.setAdapter(mCustomAdapter);
 
-		} catch (IOException exception) {
-			exception.printStackTrace();
-		}
-	}
-
-	private List<Restaurant> mRestaurantList;
-
-	/**
-	 * A placeholder fragment containing a simple view.
-	 */
-	public static class PlaceholderFragment extends Fragment {
-
-		public PlaceholderFragment() {
-		}
-
-		private List<Restaurant> mRestaurantList;
-		private CustomArrayAdapter adapter;
-		private View mRootView;
-
-		public static int getResId(String variableName, Class<?> c) {
-
-			try {
-				Field idField = c.getDeclaredField(variableName);
-				return idField.getInt(idField);
-			} catch (Exception e) {
-				e.printStackTrace();
-				return -1;
-			}
-		}
-
-		private void setList() {
-			mRestaurantList = new ArrayList<Restaurant>();
-			BufferedReader br;
-			try {
-				AssetManager assets = getActivity().getAssets();
-				br = new BufferedReader(new InputStreamReader(
-						assets.open("list.txt")));
-
-				String items = br.readLine();
-				String[] list = items.split(";;");
-
-				for (String s : list) {
-					String[] split = s.split(";");
-					Restaurant r = new Restaurant(split[0], split[1], split[2],
-							Integer.parseInt(split[3]), getResources()
-									.getIdentifier(split[4], "drawable",
-											getActivity().getPackageName()));
-					mRestaurantList.add(r);
-				}
-
-			} catch (IOException exception) {
-				exception.printStackTrace();
-			}
-		}
-
-		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-				Bundle savedInstanceState) {
-			mRootView = inflater.inflate(R.layout.fragment_main, container,
-					false);
-
-			setList();
-
-			int size = mRestaurantList.size();
-			String[] labels = new String[size];
-			String[] address = new String[size];
-			String[] phone = new String[size];
-			int[] ranks = new int[size];
-			float[] prices = new float[size];
-			int[] images = new int[size];
-
-			for (int x = 0; x < size; x++) {
-				labels[x] = mRestaurantList.get(x).getName();
-				address[x] = mRestaurantList.get(x).getAddress();
-				phone[x] = mRestaurantList.get(x).getPhone();
-				prices[x] = mRestaurantList.get(x).getPrice();
-				ranks[x] = x + 1;
-				images[x] = mRestaurantList.get(x).getImage();
-			}
-
-			adapter = new CustomArrayAdapter(getActivity(), labels, ranks,
-					prices, images, address, phone, getChildFragmentManager());
-
-			com.castro.tops.swipelistview.SwipeListView listView = (com.castro.tops.swipelistview.SwipeListView) mRootView
-					.findViewById(R.id.example_lv_list);
-
-			// ListView listView = (ListView) mRootView
-			// .findViewById(R.id.listview);
-			listView.setAdapter(adapter);
-
-			// String[] labels = { "Porto", "Ar do rio", "Downtown" };
-			// int[] ranks = { 1, 2, 3 };
-			// String[] address = { "Rua de exemplo", "Avenida Diogo Leite nº5",
-			// "Rua do Bonjardim nº87" };
-			// String[] phone = { "22 332 4562", "22 200 6465", "22 370 1797" };
-			// float[] prices = { 10, 8.5f, 5 };
-			// int[] images = { R.drawable.one, R.drawable.two, R.drawable.three
-			// };
-			//
-			// adapter = new CustomArrayAdapter(getActivity(), labels, ranks,
-			// prices, images, address, phone, getChildFragmentManager());
-
-			return mRootView;
-		}
+		new BuildRestaurantList().execute();
 	}
 
 }

@@ -7,6 +7,10 @@ public class Restaurant {
 	private String mPhone;
 	private int mPrice;
 	private int mImage;
+	private int mRank;
+
+	public Restaurant() {
+	}
 
 	public Restaurant(String name, String address, String phone, int price,
 			int image) {
@@ -19,6 +23,10 @@ public class Restaurant {
 
 	public int getImage() {
 		return mImage;
+	}
+
+	public int getRank() {
+		return mRank;
 	}
 
 	public String getName() {
@@ -35,6 +43,10 @@ public class Restaurant {
 
 	public void setAddress(String mAddress) {
 		this.mAddress = mAddress;
+	}
+
+	public void setRank(int rank) {
+		this.mRank = rank;
 	}
 
 	public String getPhone() {
