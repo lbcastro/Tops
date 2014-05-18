@@ -12,13 +12,13 @@
         android:listSelector="#00000000"
         android:scrollbars="none"
         swipe:swipeActionLeft="reveal"
-        swipe:swipeActionRight="reveal"
-        swipe:swipeAnimationTime="400"
+        swipe:swipeActionRight="choice"
+        swipe:swipeAnimationTime="800"
         swipe:swipeBackView="@+id/back"
         swipe:swipeCloseAllItemsWhenMoveList="true"
         swipe:swipeFrontView="@+id/front"
         swipe:swipeMode="left"
-        swipe:swipeOffsetLeft="32dp"
+        swipe:swipeOffsetLeft="16dp"
         swipe:swipeOpenOnLongPress="false" />
 
 </LinearLayout>

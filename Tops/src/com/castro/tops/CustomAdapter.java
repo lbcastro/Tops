@@ -54,7 +54,8 @@ public class CustomAdapter extends BaseAdapter {
 			holder.addressView = (TextView) convertView
 					.findViewById(R.id.address);
 			holder.phoneView = (TextView) convertView.findViewById(R.id.phone);
-			holder.priceView = (TextView) convertView.findViewById(R.id.price);
+			holder.priceView = (TextView) convertView
+					.findViewById(R.id.price_value);
 			holder.rankView = (TextView) convertView.findViewById(R.id.rank);
 
 			convertView.setTag(holder);
@@ -70,17 +71,16 @@ public class CustomAdapter extends BaseAdapter {
 		holder.phoneView.setText(item.getPhone());
 		holder.priceView.setText("€");
 		holder.priceView.setTextColor(c.getColorRank());
-		holder.labelView.setText(Integer.toString(item.getRank()) + ". "
-				+ item.getName());
-		// holder.rankView.setText(Integer.toString(item.getRank()));
+		holder.labelView.setText(item.getName());
+		holder.rankView.setText(Integer.toString(item.getRank()));
 
 		return convertView;
 	}
 
 	private class ColorByPrice {
-		private final int PRICE_COLOR_LOW = Color.parseColor("#79BD9A");
-		private final int PRICE_COLOR_MID = Color.parseColor("#EDC951");
-		private final int PRICE_COLOR_HIGH = Color.parseColor("#C11515");
+		private final int PRICE_COLOR_LOW = Color.parseColor("#A079BD9A");
+		private final int PRICE_COLOR_MID = Color.parseColor("#A0EDC951");
+		private final int PRICE_COLOR_HIGH = Color.parseColor("#A0C11515");
 
 		private final int PRICE_THRESHOLD_LOW = 5;
 		private final int PRICE_THRESHOLD_MID = 9;

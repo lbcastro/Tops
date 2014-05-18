@@ -2,67 +2,73 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/row_height"
-    android:background="@drawable/one_map"
     android:orientation="vertical" >
 
     <RelativeLayout
         android:id="@+id/back"
         android:layout_width="match_parent"
         android:layout_height="@dimen/row_height"
-        android:background="#DC000000"
         android:tag="back" >
 
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/one_map"
+            android:scaleType="centerCrop" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#50000000" />
+
         <TextView
-            android:id="@+id/price_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-            android:fontFamily="sans-serif-light"
-            android:gravity="bottom"
-            android:paddingRight="40dp"
-            android:paddingTop="8dp"
-            android:textColor="#ffffff"
-            android:textSize="24sp" />
+            android:paddingRight="16dp"
+            android:text="+"
+            android:textColor="#A0ffffff"
+            android:textSize="48sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/price_value"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:gravity="center"
+            android:paddingBottom="8dp"
+            android:paddingRight="16dp"
+            android:textColor="#A0ffffff"
+            android:textSize="48sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_above="@+id/phone"
+            android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:fontFamily="sans-serif-light"
-            android:gravity="bottom"
-            android:paddingLeft="16dp"
-            android:paddingTop="8dp"
-            android:text="Morada de teste"
-            android:textColor="#ffffff"
-            android:textSize="24sp" />
+            android:gravity="bottom|left"
+            android:paddingLeft="24dp"
+            android:textColor="#000000"
+            android:textSize="18sp" />
 
         <TextView
-            android:id="@+id/phone"
+            android:id="@id/phone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/address"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
             android:fontFamily="sans-serif-light"
-            android:gravity="bottom"
-            android:paddingLeft="16dp"
-            android:textColor="#D5DED9"
+            android:gravity="bottom|left"
+            android:paddingBottom="16dp"
+            android:paddingLeft="24dp"
+            android:textColor="#000000"
             android:textSize="16sp" />
-
-        <!-- <android.support.v4.view.ViewPager -->
-        <!-- android:id="@+id/pager" -->
-        <!-- android:layout_width="match_parent" -->
-        <!-- android:layout_height="match_parent" -->
-        <!-- android:layout_marginRight="32dp" /> -->
-
-
-        <!-- <ImageView -->
-        <!-- android:id="@+id/image" -->
-        <!-- android:layout_width="match_parent" -->
-        <!-- android:layout_height="match_parent" -->
-        <!-- android:scaleType="centerCrop" -->
-        <!-- android:src="@drawable/one" /> -->
-
     </RelativeLayout>
 
     <RelativeLayout
@@ -77,6 +83,11 @@
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
             android:tag="image" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#50000000" />
     </RelativeLayout>
 
     <TextView
@@ -85,36 +96,24 @@
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:background="#50000000"
-        android:gravity="bottom|left"
-        android:paddingBottom="16dp"
+        android:gravity="top|left"
         android:paddingLeft="24dp"
+        android:paddingTop="16dp"
         android:textColor="#ffffff"
         android:textSize="26sp"
         android:textStyle="bold" />
 
     <TextView
         android:id="@+id/rank"
-        android:layout_width="32dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_marginBottom="8dp"
-        android:fontFamily="sans-serif-light"
         android:gravity="center_horizontal"
-        android:textColor="#ffffff"
-        android:textSize="24sp" />
-
-    <TextView
-        android:id="@+id/price"
-        android:layout_width="32dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:gravity="center_horizontal"
-        android:paddingTop="8dp"
-        android:text="€"
-        android:textColor="#ffffff"
-        android:textSize="24sp" />
+        android:paddingBottom="8dp"
+        android:paddingRight="16dp"
+        android:textColor="#A0ffffff"
+        android:textSize="48sp"
+        android:textStyle="bold" />
 
 </RelativeLayout>
