@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <item name="price_low_transparent" type="color">#A079BD9A</item>
+    <item name="price_mid_transparent" type="color">#A0EDC951</item>
+    <item name="price_high_transparent" type="color">#A0C11515</item>
+
+</resources>
