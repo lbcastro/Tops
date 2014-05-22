@@ -6,7 +6,8 @@ public class Restaurant {
 	private String mAddress;
 	private String mPhone;
 	private int mPrice;
-	private int mImage;
+	private int mImageFront;
+	private int mMap;
 	private int mRank;
 	private int mVotes;
 
@@ -24,8 +25,12 @@ public class Restaurant {
 		return mAddress;
 	}
 
+	public int getMap() {
+		return mMap;
+	}
+
 	public int getImage() {
-		return mImage;
+		return mImageFront;
 	}
 
 	public String getName() {
@@ -52,6 +57,10 @@ public class Restaurant {
 		this.mAddress = mAddress;
 	}
 
+	public void setImage(int image) {
+		mImageFront = image;
+	}
+
 	public void setMissingValues() {
 		if (mName == null || mName.isEmpty()) {
 			mName = DEFAULT_NAME;
@@ -65,16 +74,12 @@ public class Restaurant {
 		if (mPrice == 0) {
 			mPrice = DEFAULT_PRICE;
 		}
-		if (mImage == 0) {
-			mImage = DEFAULT_IMAGE;
+		if (mImageFront == 0) {
+			mImageFront = DEFAULT_IMAGE;
 		}
 		if (mRank == 0) {
 			mRank = DEFAULT_RANK;
 		}
-	}
-
-	public void setImage(int image) {
-		mImage = image;
 	}
 
 	public void setName(String mName) {
@@ -95,6 +100,10 @@ public class Restaurant {
 
 	public void setVotes(int votes) {
 		this.mVotes = votes;
+	}
+
+	public void setMap(int map) {
+		this.mMap = map;
 	}
 
 }

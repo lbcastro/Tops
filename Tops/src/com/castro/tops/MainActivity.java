@@ -3,23 +3,26 @@ package com.castro.tops;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import android.content.res.AssetManager;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.view.ActionMode;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.AbsListView;
 import android.widget.ListView;
 
 import com.castro.tops.swipelistview.SwipeListView;
+import com.castro.tops.utils.Sort;
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity implements
+		CustomAdapterInterface {
 
 	private class BuildRestaurantList extends
 			AsyncTask<Void, Void, List<Restaurant>> {
@@ -72,7 +75,7 @@ public class MainActivity extends ActionBarActivity {
 				}
 			} catch (IOException e) {
 			}
-			sortList(list, Sort.MODE_VOTES, false);
+			Sort.sortList(list, Sort.MODE_VOTES, false);
 			return list;
 		}
 
@@ -82,12 +85,6 @@ public class MainActivity extends ActionBarActivity {
 			mRestaurantList.addAll(list);
 			mCustomAdapter.notifyDataSetChanged();
 		}
-	}
-
-	private interface Sort {
-		public static int MODE_RANK = 0;
-		public static int MODE_LETTER = 1;
-		public static int MODE_VOTES = 2;
 	}
 
 	private List<Restaurant> mRestaurantList;
@@ -101,32 +98,37 @@ public class MainActivity extends ActionBarActivity {
 		setSwipeList();
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
+	// @Override
+	// public boolean onCreateOptionsMenu(Menu menu) {
+	//
+	// // Inflate the menu; this adds items to the action bar if it is present.
+	// getMenuInflater().inflate(R.menu.main, menu);
+	// return true;
+	// }
 
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
-	}
+	// @Override
+	// public boolean onOptionsItemSelected(MenuItem item) {
+	// // Handle action bar item clicks here. The action bar will
+	// // automatically handle clicks on the Home/Up button, so long
+	// // as you specify a parent activity in AndroidManifest.xml.
+	// int id = item.getItemId();
+	// if (id == R.id.action_settings) {
+	// return true;
+	// }
+	// return super.onOptionsItemSelected(item);
+	// }
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
+	SwipeListView listView;
 
 	private void setSwipeList() {
 		mRestaurantList = new ArrayList<Restaurant>();
 		mCustomAdapter = new CustomAdapter(this, mRestaurantList);
-		SwipeListView listView = (SwipeListView) findViewById(R.id.example_lv_list);
+		mCustomAdapter.setInterface(this);
+
+		listView = (SwipeListView) findViewById(R.id.example_lv_list);
 
 		listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+
 		listView.setSwipeMode(SwipeListView.SWIPE_MODE_LEFT);
 
 		listView.setAdapter(mCustomAdapter);
@@ -134,69 +136,27 @@ public class MainActivity extends ActionBarActivity {
 		new BuildRestaurantList().execute();
 	}
 
-	private void sortByLetter(List<Restaurant> list, boolean reverse) {
-		List<String> names = new ArrayList<String>();
-		List<Restaurant> temp = new ArrayList<Restaurant>();
-
-		for (Restaurant r : list) {
-			names.add(r.getName());
-		}
-		Collections.sort(names);
-		if (reverse) {
-			Collections.reverse(names);
-		}
-
-		for (String s : names) {
-			for (Restaurant r : list) {
-				if (s.equals(r.getName())) {
-					temp.add(r);
-					list.remove(list.indexOf(r));
-					break;
-				}
-			}
-		}
-		list.clear();
-		list.addAll(temp);
+	@Override
+	public void onImageClick(int position) {
+		SwipeListView listView = (SwipeListView) findViewById(R.id.example_lv_list);
+		listView.smoothScrollToPosition(1);
 	}
 
-	private void sortByRank(List<Restaurant> list, boolean reverse) {
-		List<Restaurant> temp = new ArrayList<Restaurant>(list);
-		for (Restaurant r : list) {
-			temp.set(r.getRank() - 1, r);
-		}
-		list.clear();
-		list.addAll(temp);
-		if (reverse) {
-			Collections.reverse(list);
-		}
+	@Override
+	public void onVoteUpClick(int position) {
+		// TODO Auto-generated method stub
+
 	}
 
-	private void sortByVotes(List<Restaurant> list, final boolean reverse) {
-		final Comparator<Restaurant> comparator = new Comparator<Restaurant>() {
-			@Override
-			public int compare(Restaurant first, Restaurant second) {
-				int result = Integer.valueOf(first.getRank()).compareTo(
-						second.getRank());
-				return reverse ? result : -result;
-			}
-		};
-		Collections.sort(list, comparator);
-		for (int x = 0; x < list.size(); x++) {
-			list.get(x).setRank(x + 1);
-		}
+	@Override
+	public void onPriceClick(int position) {
+		// TODO Auto-generated method stub
+
 	}
 
-	private void sortList(List<Restaurant> list, int mode, final boolean reverse) {
-		switch (mode) {
-		case Sort.MODE_RANK:
-			sortByRank(list, reverse);
-			break;
-		case Sort.MODE_LETTER:
-			sortByLetter(list, reverse);
-			break;
-		case Sort.MODE_VOTES:
-			sortByVotes(list, reverse);
-			break;
-		}
+	@Override
+	public void onPhoneClick(int position) {
+		// TODO Auto-generated method stub
+
 	}
 }

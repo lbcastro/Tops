@@ -11,10 +11,6 @@ public class ImageFragment extends Fragment {
 	private int mImageResource;
 	private View rootView;
 
-	public void setImage(int image) {
-		mImageResource = image;
-	}
-
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -28,5 +24,9 @@ public class ImageFragment extends Fragment {
 
 		ImageView image = (ImageView) rootView.findViewById(R.id.image);
 		image.setImageResource(mImageResource);
+	}
+
+	public void setImage(int image) {
+		mImageResource = image;
 	}
 }
